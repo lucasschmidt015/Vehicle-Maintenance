@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Logo from '../../assets/images/Logo.png';
+import LogoDark from '../../assets/images/LogoDark.png';
+import LogoWhite from '../../assets/images/LogoWhite.png';
 import { StyleSheet, View, Text, Image, TextInput, Pressable } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -20,7 +21,7 @@ const SignIn = () => {
 
     return (
         <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
-            <Image source={Logo} style={styles.image}/>
+            <Image source={ isDarkMode ? LogoDark : LogoWhite } style={styles.image}/>
             <View style={styles.inputView}>
                 <TextInput style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} placeholder="E-mail" />
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
