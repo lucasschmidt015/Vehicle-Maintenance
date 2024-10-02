@@ -21,29 +21,29 @@ const SignUp = () => {
         <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
             <Image source={Logo} style={styles.image}/>
             <View style={styles.inputView}>
-                <TextInput style={styles.input} placeholder="Nome" />
-                <TextInput style={styles.input} placeholder="E-mail" />
+                <TextInput style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} placeholder="Nome" />
+                <TextInput style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} placeholder="E-mail" />
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TextInput
-                        style={[styles.input, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
+                        style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
                         placeholder="Senha"
                         secureTextEntry={isPasswordHidden}
                     />
-                    <Pressable style={styles.showPassword} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
+                    <Pressable style={[styles.showPassword, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
                         <Text style={{ color: '#fff', padding: 12 }}>
-                            <Entypo name={isPasswordHidden ? 'eye' : 'eye-with-line'} size={24} color="#fff" />
+                            <Entypo name={isPasswordHidden ? 'eye' : 'eye-with-line'} size={24} color={ isDarkMode ? '#fff' : '#000' } />
                         </Text>
                     </Pressable>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TextInput
-                        style={[styles.input, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
+                        style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
                         placeholder="Confirmar Senha"
                         secureTextEntry={isPasswordHidden}
                     />
-                    <Pressable style={styles.showPassword} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
+                    <Pressable style={[styles.showPassword, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
                         <Text style={{ color: '#fff', padding: 12 }}>
-                            <Entypo name={isPasswordHidden ? 'eye' : 'eye-with-line'} size={24} color="#fff" />
+                            <Entypo name={isPasswordHidden ? 'eye' : 'eye-with-line'} size={24} color={ isDarkMode ? '#fff' : '#000' } />
                         </Text>
                     </Pressable>
                 </View>
@@ -80,8 +80,6 @@ const styles = StyleSheet.create({
         padding: 15,
         marginVertical: 12,
         borderWidth: 1,
-        backgroundColor: '#1c1c1c',
-        color: '#fff',
         fontSize: 16,
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,
@@ -89,11 +87,20 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 10,
     },
     showPassword: {
-        backgroundColor: '#1c1c1c',
         borderTopLeftRadius: 0,
         borderBottomLeftRadius: 0,
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
+        borderColor: '#000',
+        borderWidth: 1,
+    },
+    inputColorsWhite: {
+        backgroundColor: '#efefef',
+        color: '#000',
+    },
+    inputColorsBlack: {
+        backgroundColor: '#1c1c1c',
+        color: '#fff',
     },
     buttomView: {
         width: '90%',
