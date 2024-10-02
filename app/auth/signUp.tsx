@@ -5,7 +5,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useRouter } from 'expo-router';
 
-const SignIn = () => {
+const SignUp = () => {
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
 
@@ -13,9 +13,8 @@ const SignIn = () => {
 
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
-
-    const navigateToSignUp = () => {
-        router.push({ pathname: '/auth/signUp' });
+    const navigateToSignIn = () => {
+        router.push({ pathname: '/auth/signIn' });
     }
 
     return (
@@ -38,10 +37,10 @@ const SignIn = () => {
             </View>
             <View style={styles.buttomView}>
                 <Pressable style={styles.loginButton}>
-                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Login</Text>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Submit</Text>
                 </Pressable>
-                <Pressable style={styles.registerButton} onPress={navigateToSignUp}>
-                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Create an account</Text>
+                <Pressable style={styles.registerButton} onPress={navigateToSignIn}>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Login</Text>
                 </Pressable>
             </View>
             <View style={{ width: '80%', height: 1, backgroundColor: 'gray', marginVertical: 20 }} />
@@ -103,4 +102,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SignIn;
+export default SignUp;

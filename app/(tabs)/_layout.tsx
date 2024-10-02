@@ -4,9 +4,18 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useRootNavigationState, Redirect } from 'expo-router';
 
 export default function TabLayout() {
+  const isLoggedIn = false;
+
   const colorScheme = useColorScheme();
+
+  const rootNavigationState = useRootNavigationState();
+
+  if (rootNavigationState?.key && !isLoggedIn) {
+    return <Redirect href="/auth/signIn" />;// Redirect to the sign in page if the user is not logged in
+  }
 
   return (
     <Tabs
