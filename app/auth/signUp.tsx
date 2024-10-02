@@ -21,7 +21,8 @@ const SignUp = () => {
         <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
             <Image source={Logo} style={styles.image}/>
             <View style={styles.inputView}>
-                <TextInput style={styles.input} placeholder="Email" />
+                <TextInput style={styles.input} placeholder="Nome" />
+                <TextInput style={styles.input} placeholder="E-mail" />
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TextInput
                         style={[styles.input, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
@@ -34,13 +35,25 @@ const SignUp = () => {
                         </Text>
                     </Pressable>
                 </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TextInput
+                        style={[styles.input, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
+                        placeholder="Confirmar Senha"
+                        secureTextEntry={isPasswordHidden}
+                    />
+                    <Pressable style={styles.showPassword} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
+                        <Text style={{ color: '#fff', padding: 12 }}>
+                            <Entypo name={isPasswordHidden ? 'eye' : 'eye-with-line'} size={24} color="#fff" />
+                        </Text>
+                    </Pressable>
+                </View>
             </View>
             <View style={styles.buttomView}>
                 <Pressable style={styles.loginButton}>
-                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Submit</Text>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Cadastrar</Text>
                 </Pressable>
                 <Pressable style={styles.registerButton} onPress={navigateToSignIn}>
-                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Login</Text>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Entrar</Text>
                 </Pressable>
             </View>
             <View style={{ width: '80%', height: 1, backgroundColor: 'gray', marginVertical: 20 }} />
@@ -86,7 +99,7 @@ const styles = StyleSheet.create({
         width: '90%',
         justifyContent: 'center',
         marginTop: 20,
-        marginBottom: 120,        
+        marginBottom: 80,        
     },
     loginButton: {
         padding: 15,
