@@ -25,7 +25,8 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-
+//I've started to set firebase up, I didn't finish it yet. I will finish it soon.
+//Already have the GoogleService-Info.plist.
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
