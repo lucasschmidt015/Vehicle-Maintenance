@@ -5,9 +5,10 @@ import { StyleSheet, View, Text, Image, TextInput, Pressable } from 'react-nativ
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useRouter } from 'expo-router';
-import { firebase } from '@/services/firebaseConnection';
+import { useAuth } from '@/context/AuthContext';
 
 const SignIn = () => {
+    const { login } = useAuth();
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
 
@@ -18,15 +19,11 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = async () => {
-        if( !email || !password ) {
-            alert('Preencha todos os campos!');
-            return;
-        }
-
         try {
-            const loggedUser = await firebase.auth().signInWithEmailAndPassword(email, password);
-            
+
+            await login(email, password);
             router.push({ pathname: '/(tabs)' });
+            
         } catch (error) {
             alert('Erro ao realizar login!');
         }

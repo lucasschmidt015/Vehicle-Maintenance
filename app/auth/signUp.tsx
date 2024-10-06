@@ -6,8 +6,10 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useRouter } from 'expo-router';
 import { firebase } from '@/services/firebaseConnection';
+import { useAuth } from '@/context/AuthContext';
 
 const SignUp = () => {
+    const { signUp } = useAuth();
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
 
@@ -21,27 +23,11 @@ const SignUp = () => {
     const [confirmPassword, setConfigPassword] = useState('');
 
     const createAccount = async () => {
-        if(!name || !email || !password || !confirmPassword) {
-            alert('Preencha todos os campos!');
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            alert('As senhas não coincidem!');
-            return;
-        }
-
         try {
-            const createdUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-            await db.collection('users').doc(createdUser.user.uid).set({
-                name,
-                email,
-            });
-
+            await signUp(name, email, password, confirmPassword);
             router.push({ pathname: '/(tabs)' });
         } catch (error) {
-            alert('Erro ao criar conta!');
+            alert(`Erro ao criar conta! ${error}`);
         }
     }
 
