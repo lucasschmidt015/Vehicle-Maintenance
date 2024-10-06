@@ -5,14 +5,45 @@ import { StyleSheet, View, Text, Image, TextInput, Pressable } from 'react-nativ
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useRouter } from 'expo-router';
+import { firebase } from '@/services/firebaseConnection';
 
 const SignUp = () => {
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
 
     const router = useRouter();
+    const db = firebase.firestore();
 
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfigPassword] = useState('');
+
+    const createAccount = async () => {
+        if(!name || !email || !password || !confirmPassword) {
+            alert('Preencha todos os campos!');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert('As senhas não coincidem!');
+            return;
+        }
+
+        try {
+            const createdUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+            await db.collection('users').doc(createdUser.user.uid).set({
+                name,
+                email,
+            });
+
+            router.push({ pathname: '/(tabs)' });
+        } catch (error) {
+            alert('Erro ao criar conta!');
+        }
+    }
 
     const navigateToSignIn = () => {
         router.push({ pathname: '/auth/signIn' });
@@ -22,13 +53,25 @@ const SignUp = () => {
         <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
             <Image source={ isDarkMode ? LogoDark : LogoWhite } style={styles.image}/>
             <View style={styles.inputView}>
-                <TextInput style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} placeholder="Nome" />
-                <TextInput style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} placeholder="E-mail" />
+                <TextInput 
+                    style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} 
+                    placeholder="Nome"
+                    value={name}
+                    onChangeText={setName}
+                />
+                <TextInput 
+                    style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} 
+                    placeholder="E-mail" 
+                    value={email}
+                    onChangeText={setEmail}
+                />
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TextInput
                         style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
                         placeholder="Senha"
                         secureTextEntry={isPasswordHidden}
+                        value={password}
+                        onChangeText={setPassword}
                     />
                     <Pressable style={[styles.showPassword, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
                         <Text style={{ color: '#fff', padding: 12 }}>
@@ -41,6 +84,8 @@ const SignUp = () => {
                         style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
                         placeholder="Confirmar Senha"
                         secureTextEntry={isPasswordHidden}
+                        value={confirmPassword}
+                        onChangeText={setConfigPassword}
                     />
                     <Pressable style={[styles.showPassword, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
                         <Text style={{ color: '#fff', padding: 12 }}>
@@ -50,7 +95,10 @@ const SignUp = () => {
                 </View>
             </View>
             <View style={styles.buttomView}>
-                <Pressable style={styles.loginButton}>
+                <Pressable 
+                    style={styles.loginButton}
+                    onPress={createAccount}
+                >
                     <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Cadastrar</Text>
                 </Pressable>
                 <Pressable style={styles.registerButton} onPress={navigateToSignIn}>

@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, Image, TextInput, Pressable } from 'react-nativ
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useRouter } from 'expo-router';
+import { firebase } from '@/services/firebaseConnection';
 
 const SignIn = () => {
     const colorScheme = useColorScheme();
@@ -13,7 +14,23 @@ const SignIn = () => {
     const router = useRouter();
 
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
+    const handleLogin = async () => {
+        if( !email || !password ) {
+            alert('Preencha todos os campos!');
+            return;
+        }
+
+        try {
+            const loggedUser = await firebase.auth().signInWithEmailAndPassword(email, password);
+            
+            router.push({ pathname: '/(tabs)' });
+        } catch (error) {
+            alert('Erro ao realizar login!');
+        }
+    };
 
     const navigateToSignUp = () => {
         router.push({ pathname: '/auth/signUp' });
@@ -23,12 +40,19 @@ const SignIn = () => {
         <View style={[styles.container, { backgroundColor: isDarkMode ? '#000' : '#fff' }]}>
             <Image source={ isDarkMode ? LogoDark : LogoWhite } style={styles.image}/>
             <View style={styles.inputView}>
-                <TextInput style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} placeholder="E-mail" />
+                <TextInput 
+                    style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} 
+                    placeholder="E-mail" 
+                    value={email}
+                    onChangeText={setEmail}
+                />
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TextInput
                         style={[styles.input, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite, { flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
                         placeholder="Senha"
                         secureTextEntry={isPasswordHidden}
+                        value={password}
+                        onChangeText={setPassword} 
                     />
                     <Pressable style={[styles.showPassword, isDarkMode ? styles.inputColorsBlack : styles.inputColorsWhite]} onPress={() => setIsPasswordHidden(!isPasswordHidden)}>
                         <Text style={{ color: '#fff', padding: 12 }}>
@@ -38,7 +62,7 @@ const SignIn = () => {
                 </View>
             </View>
             <View style={styles.buttomView}>
-                <Pressable style={styles.loginButton}>
+                <Pressable style={styles.loginButton} onPress={handleLogin}>
                     <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>Entrar</Text>
                 </Pressable>
                 <Pressable style={styles.registerButton} onPress={navigateToSignUp}>
